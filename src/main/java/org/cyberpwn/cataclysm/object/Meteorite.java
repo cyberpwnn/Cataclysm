@@ -7,7 +7,6 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GSound;
@@ -98,11 +97,20 @@ public class Meteorite
 						b.setType(Material.IRON_BLOCK);
 					}
 					
-					FallingBlock f = (FallingBlock) NMSX.createFallingBlock(b.getLocation());
-					f.setHurtEntities(true);
-					f.setDropItem(false);
+					try
+					{
+						Class<?> fbc = Class.forName("org.bukkit.entity.FallingBlock");
+						Entity f = NMSX.createFallingBlock(b.getLocation());
+						fbc.getMethod("setHurtEntities", boolean.class).invoke(f, true);
+						fbc.getMethod("setDropItem", boolean.class).invoke(f, false);
+						entities.add(f);
+					}
 					
-					entities.add(f);
+					catch(Exception e)
+					{
+						
+					}
+					
 				}
 				
 				if(!b.getRelative(BlockFace.UP).getType().isSolid())
