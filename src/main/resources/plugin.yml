@@ -1,0 +1,4 @@
+name: Cataclysm
+main: org.cyberpwn.cataclysm.Cataclysm
+version: ${project.version}
+depend: [Phantom]
